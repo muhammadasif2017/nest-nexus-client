@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { apiFetch, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { ActionButton } from '@/components/ActionButton';
+import { PageShell, Field, ReadoutLine } from '@/components/PageShell';
 
 interface AuthOutput {
   accessToken: string;
@@ -92,18 +93,20 @@ export default function TwoFactorPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">2FA (TOTP)</h1>
-
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input className="border rounded px-2 py-1" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <ActionButton onClick={handleLogin} loading={loading === 'login'}>Login</ActionButton>
+    <PageShell path="two-factor" title="2FA (TOTP)">
+      <div className="flex flex-col gap-3">
+        <Field label="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Field label="password" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <div>
+          <ActionButton onClick={handleLogin} loading={loading === 'login'}>Login</ActionButton>
+        </div>
       </div>
 
-      <div className="text-xs text-zinc-500 break-all">
-        Access token (in-memory only): {accessToken ?? '(none)'} {isPending && '— PENDING 2FA'}
-      </div>
+      <ReadoutLine
+        label="access token (in-memory only)"
+        value={accessToken ?? '(none)'}
+        flag={isPending ? 'PENDING 2FA' : undefined}
+      />
 
       <div className="flex flex-wrap gap-2">
         <ActionButton onClick={handleSetup} loading={loading === 'setup'}>Setup (get QR)</ActionButton>
@@ -111,11 +114,11 @@ export default function TwoFactorPage() {
 
       {qrCodeDataUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={qrCodeDataUrl} alt="2FA QR code" className="h-48 w-48" />
+        <img src={qrCodeDataUrl} alt="2FA QR code" className="h-48 w-48 rounded border border-[var(--border)]" />
       )}
 
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="TOTP or backup code" value={code} onChange={(e) => setCode(e.target.value)} />
+      <div className="flex flex-col gap-3">
+        <Field label="TOTP or backup code" placeholder="code" value={code} onChange={(e) => setCode(e.target.value)} />
         <div className="flex flex-wrap gap-2">
           <ActionButton onClick={handleEnable} loading={loading === 'enable'}>Enable</ActionButton>
           <ActionButton onClick={handleVerify} loading={loading === 'verify'}>Verify pending login</ActionButton>
@@ -124,6 +127,6 @@ export default function TwoFactorPage() {
       </div>
 
       <ResponsePanel result={result} />
-    </main>
+    </PageShell>
   );
 }

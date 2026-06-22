@@ -1,30 +1,31 @@
+import { PageShell } from '@/components/PageShell';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const PROVIDERS = [
-  { path: '/google', label: 'Continue with Google' },
-  { path: '/github', label: 'Continue with GitHub' },
-  { path: '/microsoft', label: 'Continue with Microsoft' },
+  { path: '/google', label: 'continue with google' },
+  { path: '/github', label: 'continue with github' },
+  { path: '/microsoft', label: 'continue with microsoft' },
 ];
 
 export default function OAuthPage() {
   return (
-    <main className="flex flex-1 flex-col gap-6 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">OAuth</h1>
-      <p className="text-sm text-zinc-600">
-        Full page redirect required — provider creds must be configured on the nest-nexus
-        backend, otherwise the provider rejects the request before you see this app again.
-      </p>
+    <PageShell
+      path="oauth"
+      title="OAuth"
+      description="Full page redirect required — provider creds must be configured on the nest-nexus backend, otherwise the provider rejects the request before you see this app again."
+    >
       <div className="flex flex-col gap-2">
         {PROVIDERS.map((p) => (
           <a
             key={p.path}
             href={`${API_URL}${p.path}`}
-            className="rounded bg-zinc-900 px-4 py-2 text-center text-sm font-medium text-white hover:bg-zinc-700"
+            className="rounded border border-[var(--accent-soft)] bg-[var(--bg-input)] px-4 py-2 text-center text-xs uppercase tracking-wide text-[var(--accent)] transition-shadow hover:border-[var(--accent)] hover:shadow-[0_0_16px_-4px_var(--accent)]"
           >
-            {p.label}
+            [ {p.label} ]
           </a>
         ))}
       </div>
-    </main>
+    </PageShell>
   );
 }

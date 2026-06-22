@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { apiFetch, getCsrfTokenFromCookie, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { ActionButton } from '@/components/ActionButton';
+import { PageShell, Field, ReadoutLine } from '@/components/PageShell';
 
 export default function SessionPage() {
   const [email, setEmail] = useState('');
@@ -58,25 +59,23 @@ export default function SessionPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">Session Auth</h1>
+    <PageShell path="session" title="Session Auth">
+      <ReadoutLine label="csrf token" value={csrfToken ?? '(loading…)'} />
 
-      <div className="text-xs text-zinc-500 break-all">CSRF token: {csrfToken ?? '(loading…)'}</div>
-
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input className="border rounded px-2 py-1" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <div className="flex flex-col gap-3">
+        <Field label="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Field label="password" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
 
       <div className="flex flex-wrap gap-2">
         <ActionButton onClick={handleLogin} loading={loading === 'login'}>Login</ActionButton>
         <ActionButton onClick={handleLogout} loading={loading === 'logout'}>Logout</ActionButton>
         <ActionButton onClick={handleLogoutNoCsrf} loading={loading === 'logout-no-csrf'}>
-          Logout (no CSRF header — expect 403)
+          Logout (no CSRF — expect 403)
         </ActionButton>
       </div>
 
       <ResponsePanel result={result} />
-    </main>
+    </PageShell>
   );
 }

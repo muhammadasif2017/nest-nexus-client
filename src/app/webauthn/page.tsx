@@ -5,6 +5,7 @@ import { startRegistration, startAuthentication } from '@simplewebauthn/browser'
 import { apiFetch, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { ActionButton } from '@/components/ActionButton';
+import { PageShell, Field, ReadoutLine } from '@/components/PageShell';
 
 interface AuthOutput {
   accessToken: string;
@@ -98,16 +99,14 @@ export default function WebauthnPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">WebAuthn / Passkey</h1>
-      <p className="text-sm text-zinc-600">
-        One passkey per account — re-registering replaces the existing one. Requires a real
-        browser with a platform authenticator (Windows Hello, Touch ID, etc).
-      </p>
-
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input className="border rounded px-2 py-1" placeholder="display name (signup only)" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+    <PageShell
+      path="webauthn"
+      title="WebAuthn / Passkey"
+      description="One passkey per account — re-registering replaces the existing one. Requires a real browser with a platform authenticator (Windows Hello, Touch ID, etc)."
+    >
+      <div className="flex flex-col gap-3">
+        <Field label="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Field label="display name (signup only)" placeholder="display name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -117,9 +116,9 @@ export default function WebauthnPage() {
         <ActionButton onClick={handleDeleteCredential} loading={loading === 'delete'}>Delete my passkey</ActionButton>
       </div>
 
-      <div className="text-xs text-zinc-500 break-all">Access token (in-memory only): {accessToken ?? '(none)'}</div>
+      <ReadoutLine label="access token (in-memory only)" value={accessToken ?? '(none)'} />
 
       <ResponsePanel result={result} />
-    </main>
+    </PageShell>
   );
 }

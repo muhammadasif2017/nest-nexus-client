@@ -11,9 +11,9 @@ export function ActionButton({
     <button
       onClick={onClick}
       disabled={loading}
-      className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
+      className="rounded border border-[var(--accent-soft)] bg-[var(--bg-input)] px-4 py-2 text-xs font-medium uppercase tracking-wide text-[var(--accent)] transition-shadow hover:border-[var(--accent)] hover:shadow-[0_0_16px_-4px_var(--accent)] disabled:cursor-not-allowed disabled:opacity-40"
     >
-      {loading ? 'Loading…' : children}
+      {loading ? 'running…' : `[ ${children} ]`}
     </button>
   );
 }

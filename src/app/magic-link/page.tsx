@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { apiFetch, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { ActionButton } from '@/components/ActionButton';
+import { PageShell, Field, ReadoutLine } from '@/components/PageShell';
 
 interface AuthOutput {
   accessToken: string;
@@ -43,27 +44,29 @@ export default function MagicLinkPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">Magic Link</h1>
-
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <ActionButton onClick={handleSend} loading={loading === 'send'}>Send link</ActionButton>
+    <PageShell path="magic-link" title="Magic Link">
+      <div className="flex flex-col gap-3">
+        <Field label="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <div>
+          <ActionButton onClick={handleSend} loading={loading === 'send'}>Send link</ActionButton>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <input
-          className="border rounded px-2 py-1"
-          placeholder="token (paste from email/dev log)"
+      <div className="flex flex-col gap-3">
+        <Field
+          label="token (paste from email/dev log)"
+          placeholder="token"
           value={token}
           onChange={(e) => setToken(e.target.value)}
         />
-        <ActionButton onClick={handleVerify} loading={loading === 'verify'}>Verify</ActionButton>
+        <div>
+          <ActionButton onClick={handleVerify} loading={loading === 'verify'}>Verify</ActionButton>
+        </div>
       </div>
 
-      <div className="text-xs text-zinc-500 break-all">Access token (in-memory only): {accessToken ?? '(none)'}</div>
+      <ReadoutLine label="access token (in-memory only)" value={accessToken ?? '(none)'} />
 
       <ResponsePanel result={result} />
-    </main>
+    </PageShell>
   );
 }

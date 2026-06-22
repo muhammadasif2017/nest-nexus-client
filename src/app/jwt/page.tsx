@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { apiFetch, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { ActionButton } from '@/components/ActionButton';
+import { PageShell, Field, ReadoutLine } from '@/components/PageShell';
 
 interface AuthOutput {
   accessToken: string;
@@ -96,14 +97,12 @@ export default function JwtPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">JWT Auth</h1>
-
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input className="border rounded px-2 py-1" placeholder="display name (register only)" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-        <input className="border rounded px-2 py-1" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <p className="text-xs text-zinc-500">
+    <PageShell path="jwt" title="JWT Auth">
+      <div className="flex flex-col gap-3">
+        <Field label="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Field label="display name (register only)" placeholder="display name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+        <Field label="password" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <p className="text-xs text-[var(--fg-dim)]">
           Register requires 8+ chars with uppercase, lowercase, number, and a special character
           (@$!%*?&amp;) — e.g. P@ssw0rd!
         </p>
@@ -118,11 +117,9 @@ export default function JwtPage() {
         <ActionButton onClick={handleSessions} loading={loading === 'sessions'}>Device Sessions</ActionButton>
       </div>
 
-      <div className="text-xs text-zinc-500 break-all">
-        Access token (in-memory only): {accessToken ?? '(none)'}
-      </div>
+      <ReadoutLine label="access token (in-memory only)" value={accessToken ?? '(none)'} />
 
       <ResponsePanel result={result} />
-    </main>
+    </PageShell>
   );
 }

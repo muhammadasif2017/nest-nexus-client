@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { PageShell } from '@/components/PageShell';
 
 export default function OAuthSuccessPage() {
   const [token, setToken] = useState<string | null>(null);
@@ -13,17 +14,22 @@ export default function OAuthSuccessPage() {
   }, []);
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">OAuth callback result</h1>
+    <PageShell path="oauth/success" title="OAuth callback result">
       {token ? (
-        <div className="rounded border border-green-300 bg-green-50 p-4 font-mono text-sm break-all">
+        <div
+          className="rounded border p-4 text-xs break-all"
+          style={{ borderColor: 'var(--accent-soft)', background: 'rgba(77,255,160,0.05)', color: 'var(--fg)' }}
+        >
           accessToken: {token}
         </div>
       ) : (
-        <div className="rounded border border-red-300 bg-red-50 p-4 text-sm">
+        <div
+          className="rounded border p-4 text-xs"
+          style={{ borderColor: 'var(--danger-soft)', background: 'rgba(255,93,122,0.06)', color: 'var(--danger)' }}
+        >
           No token found in URL fragment — OAuth flow did not complete successfully.
         </div>
       )}
-    </main>
+    </PageShell>
   );
 }

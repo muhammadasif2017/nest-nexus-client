@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { apiFetch, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { ActionButton } from '@/components/ActionButton';
+import { PageShell, Field, ReadoutLine } from '@/components/PageShell';
 
 interface AuthOutput {
   accessToken: string;
@@ -70,13 +71,13 @@ export default function ApiKeyPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">API Key</h1>
-
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input className="border rounded px-2 py-1" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <ActionButton onClick={handleLogin} loading={loading === 'login'}>Login</ActionButton>
+    <PageShell path="api-key" title="API Key">
+      <div className="flex flex-col gap-3">
+        <Field label="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Field label="password" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <div>
+          <ActionButton onClick={handleLogin} loading={loading === 'login'}>Login</ActionButton>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -86,21 +87,21 @@ export default function ApiKeyPage() {
         </ActionButton>
       </div>
 
-      <div className="text-xs text-zinc-500 break-all">
-        Raw key (shown once, never again): {apiKey ?? '(none)'}
+      <ReadoutLine label="raw key (shown once, never again)" value={apiKey ?? '(none)'} />
+
+      <div className="flex flex-col gap-3">
+        <Field label="key id to revoke" placeholder="key id" value={keyId} onChange={(e) => setKeyId(e.target.value)} />
+        <div>
+          <ActionButton onClick={handleRevoke} loading={loading === 'revoke'}>Revoke</ActionButton>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <input className="border rounded px-2 py-1" placeholder="key id to revoke" value={keyId} onChange={(e) => setKeyId(e.target.value)} />
-        <ActionButton onClick={handleRevoke} loading={loading === 'revoke'}>Revoke</ActionButton>
-      </div>
-
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-[var(--fg-dim)]">
         No list endpoint exists on the backend (create + revoke only) — copy the key id
         from the create response (decode the JWT-like raw key or check the DB) to revoke it.
       </p>
 
       <ResponsePanel result={result} />
-    </main>
+    </PageShell>
   );
 }

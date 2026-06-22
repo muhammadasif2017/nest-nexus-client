@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { apiFetch, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
+import { PageShell, ReadoutLine } from '@/components/PageShell';
 
 interface AuthOutput {
   accessToken: string;
@@ -26,14 +27,11 @@ function MagicLinkCallbackContent() {
   }, [token]);
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-8 max-w-2xl">
-      <h1 className="text-xl font-semibold">Magic link verification</h1>
-      {!token && <p className="text-sm text-red-700">No token found in URL.</p>}
-      {accessToken && (
-        <div className="text-xs text-zinc-500 break-all">Access token: {accessToken}</div>
-      )}
+    <PageShell path="auth/magic-link" title="Magic link verification">
+      {!token && <p className="text-xs text-[var(--danger)]">No token found in URL.</p>}
+      {accessToken && <ReadoutLine label="access token" value={accessToken} />}
       <ResponsePanel result={result} />
-    </main>
+    </PageShell>
   );
 }
 

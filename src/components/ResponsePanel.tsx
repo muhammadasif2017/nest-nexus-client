@@ -6,11 +6,22 @@ export function ResponsePanel<T>({ result }: { result: ApiResult<T> | null }) {
   const ok = result.status >= 200 && result.status < 300;
 
   return (
-    <div className={`mt-4 rounded border p-4 font-mono text-sm text-zinc-900 ${ok ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'}`}>
-      <div className="font-semibold">Status: {result.status}</div>
-      {result.error && <div className="mt-1 text-red-700">Error: {result.error}</div>}
+    <div
+      className="rounded border p-4 font-mono text-xs"
+      style={{
+        borderColor: ok ? 'var(--accent-soft)' : 'var(--danger-soft)',
+        background: ok ? 'rgba(77,255,160,0.05)' : 'rgba(255,93,122,0.06)',
+        boxShadow: ok ? '0 0 24px -16px var(--accent)' : '0 0 24px -16px var(--danger)',
+      }}
+    >
+      <div className="font-bold" style={{ color: ok ? 'var(--accent)' : 'var(--danger)' }}>
+        // status {result.status}
+      </div>
+      {result.error && <div className="mt-1 text-[var(--danger)]">err: {result.error}</div>}
       {result.data !== null && (
-        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap">{JSON.stringify(result.data, null, 2)}</pre>
+        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap text-[var(--fg)]">
+          {JSON.stringify(result.data, null, 2)}
+        </pre>
       )}
     </div>
   );
