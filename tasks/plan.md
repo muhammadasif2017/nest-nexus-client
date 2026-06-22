@@ -25,12 +25,12 @@ against running nest-nexus backend on :3000.
 - [x] Task 7: OAuth page — 3 provider redirect buttons + /oauth/success callback page reading token from URL fragment
 - [x] Task 8: 2FA page — login, setup (QR), enable, verify pending-scope token, disable (needs Task 4)
 - [x] Task 9: Magic link page — send + verify (token pasted manually, no-enumeration UX noted)
-- [ ] Task 10: API key page — create/list/revoke/test (needs Task 4)
+- [x] Task 10: API key page — create/revoke/test (no list endpoint on backend; test call hits Bull Board, the only ApiKeyGuard-protected route, dev-only) (needs Task 4)
 
 ### Checkpoint: Complete
-- [ ] All 7 pages functional against local nest-nexus
-- [ ] Each shows golden path + one error case
-- [ ] `npm run build` clean
+- [x] All 7 pages built against local nest-nexus
+- [ ] Each shows golden path + one error case (manual exercise pending)
+- [x] `npm run build` clean
 
 ## Risks
 - Backend `CLIENT_ORIGIN` must be `http://localhost:3001` or every request CORS-blocks. User action, out of scope here.
