@@ -7,6 +7,8 @@ export function ResponsePanel<T>({ result }: { result: ApiResult<T> | null }) {
 
   return (
     <div
+      role="status"
+      aria-live="polite"
       className="rounded border p-4 font-mono text-xs"
       style={{
         borderColor: ok ? 'var(--accent-soft)' : 'var(--danger-soft)',
