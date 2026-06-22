@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nest-nexus-client
 
-## Getting Started
+Frontend test harness for the [nest-nexus](../nest-nexus) backend. One page per auth
+method, each showing the raw request/response.
 
-First, run the development server:
+## Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. `npm install`
+2. `cp env.example .env.local` and adjust `NEXT_PUBLIC_API_URL` if your backend
+   isn't on `http://localhost:3000/api/v1`.
+3. On the backend (nest-nexus), set `CLIENT_ORIGIN=http://localhost:3001` in
+   `.env` — required for CORS, since this app runs on a different port.
+4. `npm run dev` — serves on `http://localhost:3001`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Backend must be running (`npm run start:dev` in nest-nexus) before testing.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Auth method |
+|---|---|
+| `/jwt` | JWT |
+| `/session` | Session |
+| `/webauthn` | WebAuthn/Passkey |
+| `/oauth` | OAuth |
+| `/two-factor` | 2FA (TOTP) |
+| `/magic-link` | Magic link (send + manual token paste) |
+| `/auth/magic-link` | Magic link callback (auto-verifies `?token=` from the emailed link) |
+| `/api-key` | API key |
 
-## Learn More
+## Testing
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Manual only — no automated test suite. Exercise the golden path + at least one
+error case per page against a running backend.
