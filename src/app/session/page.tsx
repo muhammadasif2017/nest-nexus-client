@@ -34,6 +34,10 @@ export default function SessionPage() {
         body: JSON.stringify({ email, password }),
       }),
     );
+    // Login calls req.session.regenerate() (prevents session fixation) — that gives
+    // a new session id, which invalidates any CSRF token minted before login.
+    const fresh = await apiFetch<{ csrfToken: string }>('/auth/session/csrf-token');
+    if (fresh.data) setCsrfToken(fresh.data.csrfToken);
   }
 
   async function handleLogout() {
