@@ -6,7 +6,7 @@ export function ResponsePanel<T>({ result }: { result: ApiResult<T> | null }) {
   const ok = result.status >= 200 && result.status < 300;
 
   return (
-    <div className={`mt-4 rounded border p-4 font-mono text-sm ${ok ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'}`}>
+    <div className={`mt-4 rounded border p-4 font-mono text-sm text-zinc-900 ${ok ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'}`}>
       <div className="font-semibold">Status: {result.status}</div>
       {result.error && <div className="mt-1 text-red-700">Error: {result.error}</div>}
       {result.data !== null && (
