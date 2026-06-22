@@ -23,7 +23,7 @@ against running nest-nexus backend on :3000.
 
 ### Phase 3: Remaining methods
 - [x] Task 7: OAuth page — 3 provider redirect buttons + /oauth/success callback page reading token from URL fragment
-- [ ] Task 8: 2FA page — enable + verify pending-scope token (needs Task 4)
+- [x] Task 8: 2FA page — login, setup (QR), enable, verify pending-scope token, disable (needs Task 4)
 - [ ] Task 9: Magic link page — request + verify
 - [ ] Task 10: API key page — create/list/revoke/test (needs Task 4)
 
