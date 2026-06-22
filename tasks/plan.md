@@ -17,7 +17,7 @@ against running nest-nexus backend on :3000.
 - [ ] `npm run dev` serves landing page on :3001 with 7 links (manual check pending)
 
 ### Phase 2: Core auth slices
-- [ ] Task 4: JWT page — register/login/refresh/logout/me/device-sessions
+- [x] Task 4: JWT page — register/login/refresh/logout/me/device-sessions
 - [ ] Task 5: Session page — login/logout, CSRF header wiring
 - [ ] Task 6: WebAuthn page — register/login passkey (needs Task 4 for JWT)
 
