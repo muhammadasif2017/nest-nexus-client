@@ -22,7 +22,7 @@ against running nest-nexus backend on :3000.
 - [x] Task 6: WebAuthn page — signup (passkey-only), login, register/replace passkey (needs Task 4 for JWT), delete credential
 
 ### Phase 3: Remaining methods
-- [ ] Task 7: OAuth page — 3 provider redirect buttons + callback result
+- [x] Task 7: OAuth page — 3 provider redirect buttons + /oauth/success callback page reading token from URL fragment
 - [ ] Task 8: 2FA page — enable + verify pending-scope token (needs Task 4)
 - [ ] Task 9: Magic link page — request + verify
 - [ ] Task 10: API key page — create/list/revoke/test (needs Task 4)
