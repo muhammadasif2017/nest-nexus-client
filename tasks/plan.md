@@ -18,7 +18,7 @@ against running nest-nexus backend on :3000.
 
 ### Phase 2: Core auth slices
 - [x] Task 4: JWT page — register/login/refresh/logout/me/device-sessions
-- [ ] Task 5: Session page — login/logout, CSRF header wiring
+- [x] Task 5: Session page — login/logout, CSRF header wiring (required adding GET /auth/session/csrf-token to nest-nexus backend, see fix/session-csrf-token-endpoint branch)
 - [ ] Task 6: WebAuthn page — register/login passkey (needs Task 4 for JWT)
 
 ### Phase 3: Remaining methods
