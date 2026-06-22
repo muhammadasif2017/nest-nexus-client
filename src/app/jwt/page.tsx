@@ -18,6 +18,17 @@ interface DeviceSession {
   [key: string]: unknown;
 }
 
+// Mirrors RegisterInput validation in nest-nexus (register.input.ts) — fail fast
+// client-side instead of round-tripping a guaranteed 400.
+const PASSWORD_PATTERN = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,72}$/;
+
+function validatePassword(password: string): string | null {
+  if (!PASSWORD_PATTERN.test(password)) {
+    return 'Password must be 8-72 chars with uppercase, lowercase, number, and a special character (@$!%*?&).';
+  }
+  return null;
+}
+
 export default function JwtPage() {
   const [email, setEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -35,6 +46,11 @@ export default function JwtPage() {
   }
 
   async function handleRegister() {
+    const validationError = validatePassword(password);
+    if (validationError) {
+      setResult({ status: 400, data: null, error: validationError });
+      return;
+    }
     const res = await run('register', () =>
       apiFetch<AuthOutput>('/auth/register', {
         method: 'POST',
@@ -87,6 +103,10 @@ export default function JwtPage() {
         <input className="border rounded px-2 py-1" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <input className="border rounded px-2 py-1" placeholder="display name (register only)" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
         <input className="border rounded px-2 py-1" placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <p className="text-xs text-zinc-500">
+          Register requires 8+ chars with uppercase, lowercase, number, and a special character
+          (@$!%*?&amp;) — e.g. P@ssw0rd!
+        </p>
       </div>
 
       <div className="flex flex-wrap gap-2">
