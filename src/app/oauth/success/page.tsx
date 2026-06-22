@@ -16,17 +16,11 @@ export default function OAuthSuccessPage() {
   return (
     <PageShell path="oauth/success" title="OAuth callback result">
       {token ? (
-        <div
-          className="rounded border p-4 text-xs break-all"
-          style={{ borderColor: 'var(--accent-soft)', background: 'rgba(77,255,160,0.05)', color: 'var(--fg)' }}
-        >
+        <div className="rounded border border-[var(--accent-soft)] bg-[rgba(77,255,160,0.05)] p-4 text-xs break-all text-[var(--fg)]">
           accessToken: {token}
         </div>
       ) : (
-        <div
-          className="rounded border p-4 text-xs"
-          style={{ borderColor: 'var(--danger-soft)', background: 'rgba(255,93,122,0.06)', color: 'var(--danger)' }}
-        >
+        <div className="rounded border border-[var(--danger-soft)] bg-[rgba(255,93,122,0.06)] p-4 text-xs text-[var(--danger)]">
           No token found in URL fragment — OAuth flow did not complete successfully.
         </div>
       )}

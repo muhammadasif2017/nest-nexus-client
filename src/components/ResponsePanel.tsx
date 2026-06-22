@@ -9,14 +9,13 @@ export function ResponsePanel<T>({ result }: { result: ApiResult<T> | null }) {
     <div
       role="status"
       aria-live="polite"
-      className="rounded border p-4 font-mono text-xs"
-      style={{
-        borderColor: ok ? 'var(--accent-soft)' : 'var(--danger-soft)',
-        background: ok ? 'rgba(77,255,160,0.05)' : 'rgba(255,93,122,0.06)',
-        boxShadow: ok ? '0 0 24px -16px var(--accent)' : '0 0 24px -16px var(--danger)',
-      }}
+      className={
+        ok
+          ? 'rounded border border-[var(--accent-soft)] bg-[rgba(77,255,160,0.05)] p-4 font-mono text-xs shadow-[0_0_24px_-16px_var(--accent)]'
+          : 'rounded border border-[var(--danger-soft)] bg-[rgba(255,93,122,0.06)] p-4 font-mono text-xs shadow-[0_0_24px_-16px_var(--danger)]'
+      }
     >
-      <div className="font-bold" style={{ color: ok ? 'var(--accent)' : 'var(--danger)' }}>
+      <div className={ok ? 'font-bold text-[var(--accent)]' : 'font-bold text-[var(--danger)]'}>
         // status {result.status}
       </div>
       {result.error && <div className="mt-1 text-[var(--danger)]">err: {result.error}</div>}
