@@ -1,0 +1,37 @@
+# Implementation Plan: nest-nexus-client
+
+## Overview
+One page per nest-nexus auth method, sharing a fetch wrapper + raw-response
+viewer. No automated tests (per SPEC.md) — verify via build + manual exercise
+against running nest-nexus backend on :3000.
+
+## Task List
+
+### Phase 1: Foundation
+- [x] Task 1: Scaffold project (done — Next.js TS+Tailwind, App Router, src/)
+- [x] Task 2: `lib/api-client.ts` typed fetch wrapper + `.env.local.example`
+- [x] Task 3: `ResponsePanel` + `ActionButton` shared components, landing page nav to 7 routes
+
+### Checkpoint: Foundation
+- [x] `npm run build` succeeds
+- [ ] `npm run dev` serves landing page on :3001 with 7 links (manual check pending)
+
+### Phase 2: Core auth slices
+- [ ] Task 4: JWT page — register/login/refresh/logout/me/device-sessions
+- [ ] Task 5: Session page — login/logout, CSRF header wiring
+- [ ] Task 6: WebAuthn page — register/login passkey (needs Task 4 for JWT)
+
+### Phase 3: Remaining methods
+- [ ] Task 7: OAuth page — 3 provider redirect buttons + callback result
+- [ ] Task 8: 2FA page — enable + verify pending-scope token (needs Task 4)
+- [ ] Task 9: Magic link page — request + verify
+- [ ] Task 10: API key page — create/list/revoke/test (needs Task 4)
+
+### Checkpoint: Complete
+- [ ] All 7 pages functional against local nest-nexus
+- [ ] Each shows golden path + one error case
+- [ ] `npm run build` clean
+
+## Risks
+- Backend `CLIENT_ORIGIN` must be `http://localhost:3001` or every request CORS-blocks. User action, out of scope here.
+- OAuth provider creds must be configured backend-side for Task 7 to do anything beyond redirect.
