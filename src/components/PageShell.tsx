@@ -41,10 +41,29 @@ export function Field({
     <label className="flex flex-col gap-1">
       <span className="text-[11px] uppercase tracking-[0.15em] text-[var(--fg-dim)]">{label}</span>
       <div className="flex items-center gap-2 rounded border border-[var(--border)] bg-[var(--bg-input)] px-3 py-2 focus-within:border-[var(--accent)]">
-        <span className="text-[var(--accent)]">&gt;</span>
+        <span aria-hidden="true" className="text-[var(--accent)]">&gt;</span>
         <input
           {...props}
           className="w-full bg-transparent text-sm text-[var(--fg)] placeholder:text-[var(--fg-dim)] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--accent)]"
+        />
+      </div>
+    </label>
+  );
+}
+
+export function Textarea({
+  label,
+  ...props
+}: { label: string } & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  return (
+    <label className="flex flex-col gap-1">
+      <span className="text-[11px] uppercase tracking-[0.15em] text-[var(--fg-dim)]">{label}</span>
+      <div className="flex gap-2 rounded border border-[var(--border)] bg-[var(--bg-input)] px-3 py-2 focus-within:border-[var(--accent)]">
+        <span aria-hidden="true" className="mt-0.5 text-[var(--accent)]">&gt;</span>
+        <textarea
+          {...props}
+          rows={props.rows ?? 3}
+          className="w-full resize-y bg-transparent text-sm text-[var(--fg)] placeholder:text-[var(--fg-dim)] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--accent)]"
         />
       </div>
     </label>

@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { apiFetch, type ApiResult } from '@/lib/api-client';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { ActionButton } from '@/components/ActionButton';
-import { PageShell, Field, ReadoutLine } from '@/components/PageShell';
+import { PageShell, Field, Textarea, ReadoutLine } from '@/components/PageShell';
+import { Select } from '@/components/Select';
 
 const VISIBILITIES = ['private', 'internal', 'public'] as const;
+const UPDATE_VISIBILITIES = [{ value: '', label: '(no change)' }, ...VISIBILITIES.map((v) => ({ value: v, label: v }))] as const;
 const RELATIONS = ['viewer', 'editor'] as const;
 
 export default function AuthorizationPage() {
@@ -44,8 +46,6 @@ export default function AuthorizationPage() {
     return res;
   }
 
-  // --- RBAC / Scopes ---
-
   async function handleCreate() {
     await run('create', () =>
       apiFetch<unknown>('/documents', {
@@ -63,23 +63,17 @@ export default function AuthorizationPage() {
     );
   }
 
-  // --- Composed read (RBAC + ABAC + ReBAC) ---
-
   async function handleReadOne() {
     await run('read-one', () =>
       apiFetch<unknown>(`/documents/${docId}`, { headers: authHeader() }),
     );
   }
 
-  // --- ABAC: visibility policy gate ---
-
   async function handlePreview() {
     await run('preview', () =>
       apiFetch<unknown>(`/documents/${docId}/preview`, { headers: authHeader() }),
     );
   }
-
-  // --- ReBAC mutations ---
 
   async function handleUpdate() {
     const payload: Record<string, string> = {};
@@ -103,8 +97,6 @@ export default function AuthorizationPage() {
       }),
     );
   }
-
-  // --- ReBAC sharing ---
 
   async function handleShare() {
     await run('share', () =>
@@ -149,22 +141,8 @@ export default function AuthorizationPage() {
           rbac / scopes — document:read · document:write
         </p>
         <Field label="title" placeholder="Quarterly report" value={title} onChange={(e) => setTitle(e.target.value)} />
-        <Field label="body" placeholder="Body text…" value={body} onChange={(e) => setBody(e.target.value)} />
-        <label className="flex flex-col gap-1">
-          <span className="text-[11px] uppercase tracking-[0.15em] text-[var(--fg-dim)]">visibility</span>
-          <div className="flex items-center gap-2 rounded border border-[var(--border)] bg-[var(--bg-input)] px-3 py-2 focus-within:border-[var(--accent)]">
-            <span className="text-[var(--accent)]">&gt;</span>
-            <select
-              value={visibility}
-              onChange={(e) => setVisibility(e.target.value)}
-              className="w-full bg-transparent text-sm text-[var(--fg)] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--accent)]"
-            >
-              {VISIBILITIES.map((v) => (
-                <option key={v} value={v}>{v}</option>
-              ))}
-            </select>
-          </div>
-        </label>
+        <Textarea label="body" placeholder="Body text…" value={body} onChange={(e) => setBody(e.target.value)} />
+        <Select label="visibility" value={visibility} onChange={setVisibility} options={VISIBILITIES} />
         <div className="flex gap-2">
           <Field label="skip" placeholder="0" value={skip} onChange={(e) => setSkip(e.target.value)} />
           <Field label="take" placeholder="20" value={take} onChange={(e) => setTake(e.target.value)} />
@@ -213,30 +191,18 @@ export default function AuthorizationPage() {
           value={updateTitle}
           onChange={(e) => setUpdateTitle(e.target.value)}
         />
-        <Field
+        <Textarea
           label="update body (optional)"
           placeholder="New body"
           value={updateBody}
           onChange={(e) => setUpdateBody(e.target.value)}
         />
-        <label className="flex flex-col gap-1">
-          <span className="text-[11px] uppercase tracking-[0.15em] text-[var(--fg-dim)]">
-            update visibility (optional — owner only)
-          </span>
-          <div className="flex items-center gap-2 rounded border border-[var(--border)] bg-[var(--bg-input)] px-3 py-2 focus-within:border-[var(--accent)]">
-            <span className="text-[var(--accent)]">&gt;</span>
-            <select
-              value={updateVisibility}
-              onChange={(e) => setUpdateVisibility(e.target.value)}
-              className="w-full bg-transparent text-sm text-[var(--fg)] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--accent)]"
-            >
-              <option value="">(no change)</option>
-              {VISIBILITIES.map((v) => (
-                <option key={v} value={v}>{v}</option>
-              ))}
-            </select>
-          </div>
-        </label>
+        <Select
+          label="update visibility (optional — owner only)"
+          value={updateVisibility}
+          onChange={setUpdateVisibility}
+          options={UPDATE_VISIBILITIES}
+        />
         <div className="flex flex-wrap gap-2">
           <ActionButton onClick={handleUpdate} loading={loading === 'update'}>
             PATCH /documents/:id
@@ -262,21 +228,12 @@ export default function AuthorizationPage() {
           value={shareTargetId}
           onChange={(e) => setShareTargetId(e.target.value)}
         />
-        <label className="flex flex-col gap-1">
-          <span className="text-[11px] uppercase tracking-[0.15em] text-[var(--fg-dim)]">relation to grant / revoke</span>
-          <div className="flex items-center gap-2 rounded border border-[var(--border)] bg-[var(--bg-input)] px-3 py-2 focus-within:border-[var(--accent)]">
-            <span className="text-[var(--accent)]">&gt;</span>
-            <select
-              value={shareRelation}
-              onChange={(e) => setShareRelation(e.target.value)}
-              className="w-full bg-transparent text-sm text-[var(--fg)] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--accent)]"
-            >
-              {RELATIONS.map((r) => (
-                <option key={r} value={r}>{r}</option>
-              ))}
-            </select>
-          </div>
-        </label>
+        <Select
+          label="relation to grant / revoke"
+          value={shareRelation}
+          onChange={setShareRelation}
+          options={RELATIONS}
+        />
         <div className="flex flex-wrap gap-2">
           <ActionButton onClick={handleShare} loading={loading === 'share'}>
             POST /documents/:id/share
