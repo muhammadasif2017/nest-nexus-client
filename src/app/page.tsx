@@ -2,12 +2,12 @@ import Link from 'next/link';
 
 const AUTH_METHODS = [
   { href: '/jwt', label: 'jwt' },
-  { href: '/session', label: 'session' },
   { href: '/oauth', label: 'oauth' },
   { href: '/two-factor', label: 'two-factor' },
   { href: '/magic-link', label: 'magic-link' },
   { href: '/api-key', label: 'api-key' },
   { href: '/webauthn', label: 'webauthn' },
+  { href: '/authorization', label: 'authorization' },
 ];
 
 export default function Home() {
